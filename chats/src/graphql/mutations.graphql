@@ -1,0 +1,100 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateSubscribe(
+  $input: CreateSubscribeInput!
+  $condition: ModelSubscribeConditionInput
+) {
+  createSubscribe(input: $input, condition: $condition) {
+    id
+    topicId
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      subscriptions {
+        nextToken
+      }
+      messages {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}
+mutation UpdateSubscribe(
+  $input: UpdateSubscribeInput!
+  $condition: ModelSubscribeConditionInput
+) {
+  updateSubscribe(input: $input, condition: $condition) {
+    id
+    topicId
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      subscriptions {
+        nextToken
+      }
+      messages {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}
+mutation DeleteSubscribe(
+  $input: DeleteSubscribeInput!
+  $condition: ModelSubscribeConditionInput
+) {
+  deleteSubscribe(input: $input, condition: $condition) {
+    id
+    topicId
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      subscriptions {
+        nextToken
+      }
+      messages {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}

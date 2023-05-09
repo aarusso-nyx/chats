@@ -1,0 +1,13 @@
+{
+  "resourceName": "s3chatsstorage06ea0297",
+  "bucketName": "chats-storage-06ea0297",
+  "policyUUID": "71e52ceb",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ]
+}
