@@ -3,7 +3,7 @@
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "chats2976f332",
+    "resourceNameTruncated": "chats240d3561",
     "userPoolName": "chats",
     "autoVerifiedAttributes": [
       "email"
@@ -24,20 +24,26 @@
       "Requires Symbols",
       "Requires Uppercase"
     ],
-    "requiredAttributes": [],
+    "requiredAttributes": [
+      "email",
+      "birthdate",
+      "name",
+      "phone_number"
+    ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "chats2976f332_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "chats240d3561_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "2976f332",
+    "sharedId": "240d3561",
     "resourceName": "chats",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
     "usernameAttributes": [
-      "email"
+      "email",
+      "phone_number"
     ],
     "useDefault": "manual",
     "userPoolGroups": false,
@@ -45,6 +51,13 @@
     "adminQueries": false,
     "thirdPartyAuth": false,
     "authProviders": [],
+    "hostedUI": true,
+    "hostedUIDomainName": "5dz5evp30arx",
+    "authProvidersUserPool": [
+      "Google"
+    ],
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"birthdate\":\"birthdays\",\"name\":\"name\",\"phone_number\":\"phoneNumbers\",\"username\":\"sub\"}}]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://auth.navalport.com\"],\"LogoutURLs\":[\"https://auth.navalport.com\"]}",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true,
     "authRoleArn": {

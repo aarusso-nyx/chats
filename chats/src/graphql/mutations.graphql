@@ -1,11 +1,77 @@
 # this is an auto generated file. This will be overwritten
-mutation CreateSubscribe(
-  $input: CreateSubscribeInput!
-  $condition: ModelSubscribeConditionInput
+mutation CreateTopic(
+  $input: CreateTopicInput!
+  $condition: ModelTopicConditionInput
 ) {
-  createSubscribe(input: $input, condition: $condition) {
+  createTopic(input: $input, condition: $condition) {
     id
+    topic
+    descr
+    owner
+    n_msgs
+    n_subs
+    subscriptions {
+      nextToken
+    }
+    messages {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTopic(
+  $input: UpdateTopicInput!
+  $condition: ModelTopicConditionInput
+) {
+  updateTopic(input: $input, condition: $condition) {
+    id
+    topic
+    descr
+    owner
+    n_msgs
+    n_subs
+    subscriptions {
+      nextToken
+    }
+    messages {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTopic(
+  $input: DeleteTopicInput!
+  $condition: ModelTopicConditionInput
+) {
+  deleteTopic(input: $input, condition: $condition) {
+    id
+    topic
+    descr
+    owner
+    n_msgs
+    n_subs
+    subscriptions {
+      nextToken
+    }
+    messages {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateMessage(
+  $input: CreateMessageInput!
+  $condition: ModelMessageConditionInput
+) {
+  createMessage(input: $input, condition: $condition) {
+    id
+    owner
     topicId
+    payload
+    attachs
     topic {
       id
       topic
@@ -13,15 +79,77 @@ mutation CreateSubscribe(
       owner
       n_msgs
       n_subs
-      subscriptions {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
       createdAt
       updatedAt
     }
+    status {
+      nextToken
+    }
+    createdAt
+    topicMessagesId
+  }
+}
+mutation UpdateMessage(
+  $input: UpdateMessageInput!
+  $condition: ModelMessageConditionInput
+) {
+  updateMessage(input: $input, condition: $condition) {
+    id
+    owner
+    topicId
+    payload
+    attachs
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      createdAt
+      updatedAt
+    }
+    status {
+      nextToken
+    }
+    createdAt
+    topicMessagesId
+  }
+}
+mutation DeleteMessage(
+  $input: DeleteMessageInput!
+  $condition: ModelMessageConditionInput
+) {
+  deleteMessage(input: $input, condition: $condition) {
+    id
+    owner
+    topicId
+    payload
+    attachs
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      createdAt
+      updatedAt
+    }
+    status {
+      nextToken
+    }
+    createdAt
+    topicMessagesId
+  }
+}
+mutation CreateSubscribe(
+  $input: CreateSubscribeInput!
+  $condition: ModelSubscribeConditionInput
+) {
+  createSubscribe(input: $input, condition: $condition) {
+    id
+    topicId
     userId
     owner
     expiresAt
@@ -39,22 +167,6 @@ mutation UpdateSubscribe(
   updateSubscribe(input: $input, condition: $condition) {
     id
     topicId
-    topic {
-      id
-      topic
-      descr
-      owner
-      n_msgs
-      n_subs
-      subscriptions {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
     userId
     owner
     expiresAt
@@ -72,22 +184,6 @@ mutation DeleteSubscribe(
   deleteSubscribe(input: $input, condition: $condition) {
     id
     topicId
-    topic {
-      id
-      topic
-      descr
-      owner
-      n_msgs
-      n_subs
-      subscriptions {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
     userId
     owner
     expiresAt
@@ -96,5 +192,53 @@ mutation DeleteSubscribe(
     createdAt
     updatedAt
     topicSubscriptionsId
+  }
+}
+mutation CreateStatus(
+  $input: CreateStatusInput!
+  $condition: ModelStatusConditionInput
+) {
+  createStatus(input: $input, condition: $condition) {
+    id
+    messageId
+    userId
+    acked
+    active
+    createdAt
+    updatedAt
+    messageStatusId
+    owner
+  }
+}
+mutation UpdateStatus(
+  $input: UpdateStatusInput!
+  $condition: ModelStatusConditionInput
+) {
+  updateStatus(input: $input, condition: $condition) {
+    id
+    messageId
+    userId
+    acked
+    active
+    createdAt
+    updatedAt
+    messageStatusId
+    owner
+  }
+}
+mutation DeleteStatus(
+  $input: DeleteStatusInput!
+  $condition: ModelStatusConditionInput
+) {
+  deleteStatus(input: $input, condition: $condition) {
+    id
+    messageId
+    userId
+    acked
+    active
+    createdAt
+    updatedAt
+    messageStatusId
+    owner
   }
 }

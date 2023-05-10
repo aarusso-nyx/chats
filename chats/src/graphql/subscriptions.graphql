@@ -1,24 +1,8 @@
 # this is an auto generated file. This will be overwritten
-subscription OnCreateSubscriptionByUserId($userId: String!) {
-  onCreateSubscriptionByUserId(userId: $userId) {
+subscription OnSubscribed($userId: String!) {
+  onSubscribed(userId: $userId) {
     id
     topicId
-    topic {
-      id
-      topic
-      descr
-      owner
-      n_msgs
-      n_subs
-      subscriptions {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
     userId
     owner
     expiresAt
@@ -27,5 +11,248 @@ subscription OnCreateSubscriptionByUserId($userId: String!) {
     createdAt
     updatedAt
     topicSubscriptionsId
+  }
+}
+subscription OnCreateTopic(
+  $filter: ModelSubscriptionTopicFilterInput
+  $owner: String
+) {
+  onCreateTopic(filter: $filter, owner: $owner) {
+    id
+    topic
+    descr
+    owner
+    n_msgs
+    n_subs
+    subscriptions {
+      nextToken
+    }
+    messages {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateTopic(
+  $filter: ModelSubscriptionTopicFilterInput
+  $owner: String
+) {
+  onUpdateTopic(filter: $filter, owner: $owner) {
+    id
+    topic
+    descr
+    owner
+    n_msgs
+    n_subs
+    subscriptions {
+      nextToken
+    }
+    messages {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteTopic(
+  $filter: ModelSubscriptionTopicFilterInput
+  $owner: String
+) {
+  onDeleteTopic(filter: $filter, owner: $owner) {
+    id
+    topic
+    descr
+    owner
+    n_msgs
+    n_subs
+    subscriptions {
+      nextToken
+    }
+    messages {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateMessage(
+  $filter: ModelSubscriptionMessageFilterInput
+  $owner: String
+) {
+  onCreateMessage(filter: $filter, owner: $owner) {
+    id
+    owner
+    topicId
+    payload
+    attachs
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      createdAt
+      updatedAt
+    }
+    status {
+      nextToken
+    }
+    createdAt
+    topicMessagesId
+  }
+}
+subscription OnUpdateMessage(
+  $filter: ModelSubscriptionMessageFilterInput
+  $owner: String
+) {
+  onUpdateMessage(filter: $filter, owner: $owner) {
+    id
+    owner
+    topicId
+    payload
+    attachs
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      createdAt
+      updatedAt
+    }
+    status {
+      nextToken
+    }
+    createdAt
+    topicMessagesId
+  }
+}
+subscription OnDeleteMessage(
+  $filter: ModelSubscriptionMessageFilterInput
+  $owner: String
+) {
+  onDeleteMessage(filter: $filter, owner: $owner) {
+    id
+    owner
+    topicId
+    payload
+    attachs
+    topic {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      createdAt
+      updatedAt
+    }
+    status {
+      nextToken
+    }
+    createdAt
+    topicMessagesId
+  }
+}
+subscription OnCreateSubscribe(
+  $filter: ModelSubscriptionSubscribeFilterInput
+  $owner: String
+) {
+  onCreateSubscribe(filter: $filter, owner: $owner) {
+    id
+    topicId
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}
+subscription OnUpdateSubscribe(
+  $filter: ModelSubscriptionSubscribeFilterInput
+  $owner: String
+) {
+  onUpdateSubscribe(filter: $filter, owner: $owner) {
+    id
+    topicId
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}
+subscription OnDeleteSubscribe(
+  $filter: ModelSubscriptionSubscribeFilterInput
+  $owner: String
+) {
+  onDeleteSubscribe(filter: $filter, owner: $owner) {
+    id
+    topicId
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}
+subscription OnCreateStatus(
+  $filter: ModelSubscriptionStatusFilterInput
+  $owner: String
+) {
+  onCreateStatus(filter: $filter, owner: $owner) {
+    id
+    messageId
+    userId
+    acked
+    active
+    createdAt
+    updatedAt
+    messageStatusId
+    owner
+  }
+}
+subscription OnUpdateStatus(
+  $filter: ModelSubscriptionStatusFilterInput
+  $owner: String
+) {
+  onUpdateStatus(filter: $filter, owner: $owner) {
+    id
+    messageId
+    userId
+    acked
+    active
+    createdAt
+    updatedAt
+    messageStatusId
+    owner
+  }
+}
+subscription OnDeleteStatus(
+  $filter: ModelSubscriptionStatusFilterInput
+  $owner: String
+) {
+  onDeleteStatus(filter: $filter, owner: $owner) {
+    id
+    messageId
+    userId
+    acked
+    active
+    createdAt
+    updatedAt
+    messageStatusId
+    owner
   }
 }

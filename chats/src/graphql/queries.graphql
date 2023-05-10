@@ -1,11 +1,11 @@
 # this is an auto generated file. This will be overwritten
-query MessagesByTopicAndCreatedAt($topicId: ID!, $createdAt: AWSDateTime!) {
-  messagesByTopicAndCreatedAt(topicId: $topicId, createdAt: $createdAt) {
+query FetchFrom($topicId: ID!, $createdAt: AWSDateTime!) {
+  fetchFrom(topicId: $topicId, createdAt: $createdAt) {
     id
     owner
+    topicId
     payload
     attachs
-    topicId
     topic {
       id
       topic
@@ -13,35 +13,18 @@ query MessagesByTopicAndCreatedAt($topicId: ID!, $createdAt: AWSDateTime!) {
       owner
       n_msgs
       n_subs
-      subscriptions {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
       createdAt
       updatedAt
     }
     status {
-      items {
-        id
-        messageId
-        userId
-        acked
-        active
-        createdAt
-        updatedAt
-        messageStatusId
-        owner
-      }
       nextToken
     }
     createdAt
     topicMessagesId
   }
 }
-query TopicsByUserId($userId: String!) {
-  topicsByUserId(userId: $userId) {
+query TopicsOf($userId: String!) {
+  topicsOf(userId: $userId) {
     id
     topic
     descr
@@ -49,30 +32,9 @@ query TopicsByUserId($userId: String!) {
     n_msgs
     n_subs
     subscriptions {
-      items {
-        id
-        topicId
-        userId
-        owner
-        expiresAt
-        acked
-        active
-        createdAt
-        updatedAt
-        topicSubscriptionsId
-      }
       nextToken
     }
     messages {
-      items {
-        id
-        owner
-        payload
-        attachs
-        topicId
-        createdAt
-        topicMessagesId
-      }
       nextToken
     }
     createdAt
@@ -88,30 +50,9 @@ query GetTopic($id: ID!) {
     n_msgs
     n_subs
     subscriptions {
-      items {
-        id
-        topicId
-        userId
-        owner
-        expiresAt
-        acked
-        active
-        createdAt
-        updatedAt
-        topicSubscriptionsId
-      }
       nextToken
     }
     messages {
-      items {
-        id
-        owner
-        payload
-        attachs
-        topicId
-        createdAt
-        topicMessagesId
-      }
       nextToken
     }
     createdAt
@@ -131,12 +72,6 @@ query ListTopics(
       owner
       n_msgs
       n_subs
-      subscriptions {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -147,9 +82,9 @@ query GetMessage($id: ID!) {
   getMessage(id: $id) {
     id
     owner
+    topicId
     payload
     attachs
-    topicId
     topic {
       id
       topic
@@ -157,27 +92,10 @@ query GetMessage($id: ID!) {
       owner
       n_msgs
       n_subs
-      subscriptions {
-        nextToken
-      }
-      messages {
-        nextToken
-      }
       createdAt
       updatedAt
     }
     status {
-      items {
-        id
-        messageId
-        userId
-        acked
-        active
-        createdAt
-        updatedAt
-        messageStatusId
-        owner
-      }
       nextToken
     }
     createdAt
@@ -193,24 +111,79 @@ query ListMessages(
     items {
       id
       owner
+      topicId
       payload
       attachs
-      topicId
-      topic {
-        id
-        topic
-        descr
-        owner
-        n_msgs
-        n_subs
-        createdAt
-        updatedAt
-      }
-      status {
-        nextToken
-      }
       createdAt
       topicMessagesId
+    }
+    nextToken
+  }
+}
+query GetSubscribe($id: ID!) {
+  getSubscribe(id: $id) {
+    id
+    topicId
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}
+query ListSubscribes(
+  $filter: ModelSubscribeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSubscribes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      topicId
+      userId
+      owner
+      expiresAt
+      acked
+      active
+      createdAt
+      updatedAt
+      topicSubscriptionsId
+    }
+    nextToken
+  }
+}
+query GetStatus($id: ID!) {
+  getStatus(id: $id) {
+    id
+    messageId
+    userId
+    acked
+    active
+    createdAt
+    updatedAt
+    messageStatusId
+    owner
+  }
+}
+query ListStatuses(
+  $filter: ModelStatusFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listStatuses(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      messageId
+      userId
+      acked
+      active
+      createdAt
+      updatedAt
+      messageStatusId
+      owner
     }
     nextToken
   }

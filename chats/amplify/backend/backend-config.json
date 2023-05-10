@@ -43,8 +43,15 @@
           ],
           "passwordPolicyMinLength": 8
         },
-        "signupAttributes": [],
-        "socialProviders": [],
+        "signupAttributes": [
+          "EMAIL",
+          "BIRTHDATE",
+          "NAME",
+          "PHONE_NUMBER"
+        ],
+        "socialProviders": [
+          "GOOGLE"
+        ],
         "usernameAttributes": [
           "EMAIL"
         ],
@@ -56,26 +63,8 @@
       "service": "Cognito"
     }
   },
-  "parameters": {
-    "AMPLIFY_function_chats6d88d521_n": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "chats6d88d521"
-        }
-      ]
-    },
-    "AMPLIFY_function_chats6d88d521_secretsPathAmplifyAppId": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "chats6d88d521"
-        }
-      ]
-    }
-  },
   "storage": {
-    "s3chatsstorage06ea0297": {
+    "s3chatsstorage618dc1b5": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"
