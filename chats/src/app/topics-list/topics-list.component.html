@@ -1,5 +1,11 @@
-<span>{{ userId | json }}</span>
+<form (ngSubmit)="createTopic()">
+    <input [(ngModel)]="topicName">
 
+
+    <button type="submit">Create Topic</button>
+</form>
+
+<span>{{ userId | json }}</span>
 
 
 <div *ngIf="topics">

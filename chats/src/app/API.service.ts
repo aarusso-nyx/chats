@@ -837,9 +837,7 @@ export class APIService {
   }
   OnSubscribedListener(
     userId: string
-  ): Observable<
-    SubscriptionResponse<Pick<__SubscriptionContainer, "onSubscribed">>
-  > {
+  ) {
     const statement = `subscription OnSubscribed($userId: String!) {
         onSubscribed(userId: $userId) {
           __typename
@@ -860,8 +858,6 @@ export class APIService {
     };
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<Pick<__SubscriptionContainer, "onSubscribed">>
-    >;
+    )
   }
 }
