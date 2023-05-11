@@ -12,8 +12,21 @@ export class TopicsListComponent {
   userId: string = '';
   topics?: Promise<Array<TopicsOfQuery>>;
 
+  topic: string = '';
+  descr: string = '';
+
   constructor(private API: APIService, private Auth: AuthService) { }
 
+
+  addTopic() {
+    this.API.CreateTopic({
+      topic: this.topic,
+      descr: this.descr,
+      n_msgs: 0,
+      n_subs: 0,
+      // owner: this.userId
+    }).then(() => {});
+  }
 
   ngOnInit() {
     this.Auth.userId.subscribe(userId => {

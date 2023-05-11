@@ -1,5 +1,12 @@
 <span>{{ userId | json }}</span>
 
+<!-- <fieldset> -->
+<form>
+    <input type="text" [(ngModel)]="topic" name="topic" placeholder="topic">
+    <input type="text" [(ngModel)]="descr" name="descr" placeholder="descr">
+    <button (click)="addTopic()">Add</button>
+</form>
+<!-- </fieldset> -->
 
 
 <div *ngIf="topics">
