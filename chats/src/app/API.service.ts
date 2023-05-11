@@ -4,6 +4,7 @@
 import { Injectable } from "@angular/core";
 import API, { graphqlOperation, GraphQLResult } from "@aws-amplify/api-graphql";
 import { Observable } from "zen-observable-ts";
+import { AuthService } from "./auth.service";
 
 export interface SubscriptionResponse<T> {
   value: GraphQLResult<T>;
@@ -481,6 +482,7 @@ export type OnSubscribedSubscription = {
   providedIn: "root"
 })
 export class APIService {
+
   async PostMessage(message: MessageInput): Promise<PostMessageMutation> {
     const statement = `mutation PostMessage($message: MessageInput!) {
         postMessage(message: $message) {

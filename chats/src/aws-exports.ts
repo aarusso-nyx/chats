@@ -3,10 +3,57 @@
 
 const awsmobile = {
     "aws_project_region": "sa-east-1",
-    "aws_appsync_graphqlEndpoint": "https://ts37ehm25fcfnjn23vsa2lehty.appsync-api.sa-east-1.amazonaws.com/graphql",
+    "aws_cognito_identity_pool_id": "sa-east-1:c3e25cca-86d7-4af4-9cea-60c57730c20e",
+    "aws_cognito_region": "sa-east-1",
+    "aws_user_pools_id": "sa-east-1_k5XPbk74g",
+    "aws_user_pools_web_client_id": "68sit24lpf19k9fmqtkopf4fps",
+    "oauth": {
+        "domain": "5dz5evp30arx-staging.auth.sa-east-1.amazoncognito.com",
+        "scope": [
+            "phone",
+            "email",
+            "openid",
+            "profile",
+            "aws.cognito.signin.user.admin"
+        ],
+        "redirectSignIn": "https://auth.navalport.com",
+        "redirectSignOut": "https://auth.navalport.com",
+        "responseType": "code"
+    },
+    "federationTarget": "COGNITO_USER_POOLS",
+    "aws_cognito_username_attributes": [
+        "EMAIL"
+    ],
+    "aws_cognito_social_providers": [
+        "GOOGLE"
+    ],
+    "aws_cognito_signup_attributes": [
+        "EMAIL",
+        "BIRTHDATE",
+        "NAME",
+        "PHONE_NUMBER"
+    ],
+    "aws_cognito_mfa_configuration": "OFF",
+    "aws_cognito_mfa_types": [
+        "SMS"
+    ],
+    "aws_cognito_password_protection_settings": {
+        "passwordPolicyMinLength": 8,
+        "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+        ]
+    },
+    "aws_cognito_verification_mechanisms": [
+        "EMAIL"
+    ],
+    "aws_user_files_s3_bucket": "chats-storage-618dc1b5225707-staging",
+    "aws_user_files_s3_bucket_region": "sa-east-1",
+    "aws_appsync_graphqlEndpoint": "https://uajklpbnkzbbdi4bit674hhdmy.appsync-api.sa-east-1.amazonaws.com/graphql",
     "aws_appsync_region": "sa-east-1",
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-52wyi4b4zbexharp3wzlaujmbe"
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS"
 };
 
 

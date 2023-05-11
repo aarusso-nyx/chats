@@ -1,1 +1,11 @@
-<p>topics-list works!</p>
+<span>{{ userId | json }}</span>
+
+
+
+<div *ngIf="topics">
+
+<div *ngFor="let t of (topics|async)">
+    <a [routerLink]="['/topics', t.id]">{{ t.topic }} / {{ t.descr }} </a>
+</div>
+
+</div>

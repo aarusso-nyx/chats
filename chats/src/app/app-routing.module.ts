@@ -9,7 +9,14 @@ const routes: Routes = [{
   }, {
     path: 'topics/:topic',
     component: TopicComponent
-  }];
+  },
+{
+  path: '',
+  pathMatch: 'full',
+  redirectTo: '/topics',
+}, 
+  { path: '**', redirectTo: '/topics' }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
