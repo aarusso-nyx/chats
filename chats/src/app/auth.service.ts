@@ -1,63 +1,62 @@
-import { Injectable } from '@angular/core';
-import { Auth } from 'aws-amplify';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable }                               from '@angular/core';
+import { Auth }                                     from 'aws-amplify';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   user$: BehaviorSubject<any> = new BehaviorSubject(null);
-  userId$: BehaviorSubject<string> = new BehaviorSubject('');
+  userId$                     = this.user$.pipe(
+    filter(maybeUser => maybeUser !== null),
+    map(user => user.username));
 
   get userId(): Observable<string> {
-    return this.userId$.asObservable();
+    return this.userId$;
   }
 
   get user(): Observable<any> {
     return this.user$.asObservable();
   }
-  constructor() {
 
+  constructor() {
     if (localStorage.getItem('user')) {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       this.user$.next(user);
-      this.userId$.next(user.username);
     }
 
     Auth.currentAuthenticatedUser().then(user => {
       this.user$.next(user);
-      this.userId$.next(user.username);
       localStorage.setItem('user', JSON.stringify(user));
     }).catch(() => {});
 
-   }
+  }
 
   async login(username: string, password: string) {
     try {
-        const user = await Auth.signIn(username, password);
-        this.user$.next(user);
-        this.userId$.next(user.username);
+      const user = await Auth.signIn(username, password);
+      this.user$.next(user);
     } catch (error) {
-        console.log('error signing in', error);
+      console.log('error signing in', error);
     }
   }
 
   async logout() {
     try {
-        await Auth.signOut();
+      await Auth.signOut();
     } catch (error) {
-        console.log('error signing out: ', error);
+      console.log('error signing out: ', error);
     }
   }
 
   async signUp(username: string, password: string) {
     try {
-        const { user } = await Auth.signUp({ username, password });
-        this.user$.next(user);
-        // this.userId$.next(user.username);
-        console.log(user);
+      const { user } = await Auth.signUp({ username, password });
+      this.user$.next(user);
+      // this.userId$.next(user.username);
+      console.log(user);
     } catch (error) {
-        console.log('error signing up:', error);
+      console.log('error signing up:', error);
     }
   }
 }
