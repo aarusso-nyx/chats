@@ -1,5 +1,5 @@
 <form (ngSubmit)="createTopic()">
-    <input [(ngModel)]="topicName">
+    <input [ngModelOptions]="{standalone: true}" [(ngModel)]="topicName">
 
 
     <button type="submit">Create Topic</button>
@@ -10,8 +10,8 @@
 
 <div *ngIf="topics">
 
-<div *ngFor="let t of (topics|async)">
-    <a [routerLink]="['/topics', t.id]">{{ t.topic }} / {{ t.descr }} </a>
-</div>
+    <div *ngFor="let t of topics">
+        <a [routerLink]="['/topics', t.id]">{{ t.topic }} / {{ t.descr }} </a>
+    </div>
 
 </div>

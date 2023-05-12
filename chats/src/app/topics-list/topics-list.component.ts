@@ -11,13 +11,12 @@ import { filter } from 'rxjs';
 })
 export class TopicsListComponent {
   userId: string = '';
-  topics?: Promise<Array<TopicsOfQuery>>;
+  topics?: Array<TopicsOfQuery> = [];
   public topicName: string = '';
 
   constructor(private API: APIService, private Auth: AuthService) { }
 
   ngOnInit() {
-    // this.API.CreateTopic();
 
     this.loadTopics();
 
@@ -25,21 +24,16 @@ export class TopicsListComponent {
 
   public loadTopics() {
     this.Auth.userId
-      .subscribe(userId => {
+      .subscribe(async userId => {
         this.userId = userId;
-        console.log(userId);
-        this.topics = this.API.TopicsOf(userId);
-        this.topics.then(topics => {
-          console.log(topics);
-        });
+        this.topics = await this.API.TopicsOf(userId);
+        console.log(this.topics)
       });
   }
 
   public createTopic(): void {
-    console.log('criando')
     this.API.CreateTopic({ n_msgs: 0, n_subs: 0, topic: this.topicName })
       .then(() => this.loadTopics());
     this.topicName = '';
-
   }
 }

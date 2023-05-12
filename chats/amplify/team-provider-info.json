@@ -22,5 +22,12 @@
         "chats": {}
       }
     }
+  },
+  "dev": {
+    "categories": {
+      "auth": {
+        "chats": {}
+      }
+    }
   }
 }

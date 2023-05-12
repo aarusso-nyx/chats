@@ -40,13 +40,13 @@ type Message
 
 type Subscribe
   @aws_cognito_user_pools
-  @model(queries: null, subscriptions: null)
+  @model(queries: { list: "listSubscriptions"}, subscriptions: null)
   @auth(rules: [{ allow: owner,   operations: [create, read, delete]},
                 { allow: private, operations: [read] }])
 {
   id: ID!
-  topicId: ID!
-  userId: String!
+  topicId: ID! @index(name: "getByTopic")
+  userId: String! @index(name: "getByUser")
   owner: String
   
   expiresAt: AWSDateTime
@@ -72,10 +72,10 @@ type Status
 }
 
 # Extended queries and subscriptions
-type Query {
-  fetchFrom(topicId: ID!, createdAt: AWSDateTime!): [Message] @aws_cognito_user_pools
-  topicsOf(userId: String!): [Topic] @aws_cognito_user_pools
-}
+#type Query {
+#  fetchFrom(topicId: ID!, createdAt: AWSDateTime!): [Message] @aws_cognito_user_pools
+#  listTopics(userId: String!): [Topic] @aws_cognito_user_pools
+#}
 
 
 type Mutation {

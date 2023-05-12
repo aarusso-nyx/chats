@@ -4,7 +4,6 @@
 import { Injectable } from "@angular/core";
 import API, { graphqlOperation, GraphQLResult } from "@aws-amplify/api-graphql";
 import { Observable } from "zen-observable-ts";
-import { AuthService } from "./auth.service";
 
 export interface SubscriptionResponse<T> {
   value: GraphQLResult<T>;
@@ -258,6 +257,25 @@ export type DeleteSubscribeInput = {
   id: string;
 };
 
+export type ModelSubscribeFilterInput = {
+  id?: ModelIDInput | null;
+  topicId?: ModelIDInput | null;
+  userId?: ModelStringInput | null;
+  owner?: ModelStringInput | null;
+  expiresAt?: ModelStringInput | null;
+  acked?: ModelBooleanInput | null;
+  active?: ModelBooleanInput | null;
+  and?: Array<ModelSubscribeFilterInput | null> | null;
+  or?: Array<ModelSubscribeFilterInput | null> | null;
+  not?: ModelSubscribeFilterInput | null;
+  topicSubscriptionsId?: ModelIDInput | null;
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC"
+}
+
 export type PostMessageMutation = {
   __typename: "Message";
   id: string;
@@ -444,7 +462,7 @@ export type FetchFromQuery = {
   topicMessagesId?: string | null;
 };
 
-export type TopicsOfQuery = {
+export type ListTopicsQuery = {
   __typename: "Topic";
   id: string;
   topic: string;
@@ -462,6 +480,60 @@ export type TopicsOfQuery = {
   } | null;
   createdAt: string;
   updatedAt: string;
+};
+
+export type ListSubscriptionsQuery = {
+  __typename: "ModelSubscribeConnection";
+  items: Array<{
+    __typename: "Subscribe";
+    id: string;
+    topicId: string;
+    userId: string;
+    owner?: string | null;
+    expiresAt?: string | null;
+    acked: boolean;
+    active: boolean;
+    createdAt: string;
+    updatedAt: string;
+    topicSubscriptionsId?: string | null;
+  } | null>;
+  nextToken?: string | null;
+};
+
+export type SubscribesByTopicIdQuery = {
+  __typename: "ModelSubscribeConnection";
+  items: Array<{
+    __typename: "Subscribe";
+    id: string;
+    topicId: string;
+    userId: string;
+    owner?: string | null;
+    expiresAt?: string | null;
+    acked: boolean;
+    active: boolean;
+    createdAt: string;
+    updatedAt: string;
+    topicSubscriptionsId?: string | null;
+  } | null>;
+  nextToken?: string | null;
+};
+
+export type SubscribesByUserIdQuery = {
+  __typename: "ModelSubscribeConnection";
+  items: Array<{
+    __typename: "Subscribe";
+    id: string;
+    topicId: string;
+    userId: string;
+    owner?: string | null;
+    expiresAt?: string | null;
+    acked: boolean;
+    active: boolean;
+    createdAt: string;
+    updatedAt: string;
+    topicSubscriptionsId?: string | null;
+  } | null>;
+  nextToken?: string | null;
 };
 
 export type OnSubscribedSubscription = {
@@ -482,7 +554,6 @@ export type OnSubscribedSubscription = {
   providedIn: "root"
 })
 export class APIService {
-
   async PostMessage(message: MessageInput): Promise<PostMessageMutation> {
     const statement = `mutation PostMessage($message: MessageInput!) {
         postMessage(message: $message) {
@@ -805,9 +876,9 @@ export class APIService {
     )) as any;
     return <Array<FetchFromQuery>>response.data.fetchFrom;
   }
-  async TopicsOf(userId: string): Promise<Array<TopicsOfQuery>> {
-    const statement = `query TopicsOf($userId: String!) {
-        topicsOf(userId: $userId) {
+  async ListTopics(userId: string): Promise<Array<ListTopicsQuery>> {
+    const statement = `query ListTopics($userId: String!) {
+        listTopics(userId: $userId) {
           __typename
           id
           topic
@@ -833,11 +904,156 @@ export class APIService {
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
-    return <Array<TopicsOfQuery>>response.data.topicsOf;
+    return <Array<ListTopicsQuery>>response.data.listTopics;
+  }
+  async ListSubscriptions(
+    filter?: ModelSubscribeFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<ListSubscriptionsQuery> {
+    const statement = `query ListSubscriptions($filter: ModelSubscribeFilterInput, $limit: Int, $nextToken: String) {
+        listSubscriptions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          __typename
+          items {
+            __typename
+            id
+            topicId
+            userId
+            owner
+            expiresAt
+            acked
+            active
+            createdAt
+            updatedAt
+            topicSubscriptionsId
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListSubscriptionsQuery>response.data.listSubscriptions;
+  }
+  async SubscribesByTopicId(
+    topicId: string,
+    sortDirection?: ModelSortDirection,
+    filter?: ModelSubscribeFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<SubscribesByTopicIdQuery> {
+    const statement = `query SubscribesByTopicId($topicId: ID!, $sortDirection: ModelSortDirection, $filter: ModelSubscribeFilterInput, $limit: Int, $nextToken: String) {
+        subscribesByTopicId(
+          topicId: $topicId
+          sortDirection: $sortDirection
+          filter: $filter
+          limit: $limit
+          nextToken: $nextToken
+        ) {
+          __typename
+          items {
+            __typename
+            id
+            topicId
+            userId
+            owner
+            expiresAt
+            acked
+            active
+            createdAt
+            updatedAt
+            topicSubscriptionsId
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      topicId
+    };
+    if (sortDirection) {
+      gqlAPIServiceArguments.sortDirection = sortDirection;
+    }
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <SubscribesByTopicIdQuery>response.data.subscribesByTopicId;
+  }
+  async SubscribesByUserId(
+    userId: string,
+    sortDirection?: ModelSortDirection,
+    filter?: ModelSubscribeFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<SubscribesByUserIdQuery> {
+    const statement = `query SubscribesByUserId($userId: String!, $sortDirection: ModelSortDirection, $filter: ModelSubscribeFilterInput, $limit: Int, $nextToken: String) {
+        subscribesByUserId(
+          userId: $userId
+          sortDirection: $sortDirection
+          filter: $filter
+          limit: $limit
+          nextToken: $nextToken
+        ) {
+          __typename
+          items {
+            __typename
+            id
+            topicId
+            userId
+            owner
+            expiresAt
+            acked
+            active
+            createdAt
+            updatedAt
+            topicSubscriptionsId
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      userId
+    };
+    if (sortDirection) {
+      gqlAPIServiceArguments.sortDirection = sortDirection;
+    }
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <SubscribesByUserIdQuery>response.data.subscribesByUserId;
   }
   OnSubscribedListener(
     userId: string
-  ) {
+  ): Observable<
+    SubscriptionResponse<Pick<__SubscriptionContainer, "onSubscribed">>
+  > {
     const statement = `subscription OnSubscribed($userId: String!) {
         onSubscribed(userId: $userId) {
           __typename
@@ -858,6 +1074,8 @@ export class APIService {
     };
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
-    )
+    ) as Observable<
+      SubscriptionResponse<Pick<__SubscriptionContainer, "onSubscribed">>
+    >;
   }
 }
