@@ -1,6 +1,13 @@
 <form (ngSubmit)="createTopic()">
     <input [ngModelOptions]="{standalone: true}" [(ngModel)]="topicName">
 
+<!-- <fieldset> -->
+<form>
+    <input type="text" [(ngModel)]="topic" name="topic" placeholder="topic">
+    <input type="text" [(ngModel)]="descr" name="descr" placeholder="descr">
+    <button (click)="addTopic()">Add</button>
+</form>
+<!-- </fieldset> -->
 
     <button type="submit">Create Topic</button>
 </form>

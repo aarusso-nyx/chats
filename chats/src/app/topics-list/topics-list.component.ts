@@ -14,6 +14,9 @@ export class TopicsListComponent {
   topics?: Array<TopicsOfQuery> = [];
   public topicName: string = '';
 
+  topic: string = '';
+  descr: string = '';
+
   constructor(private API: APIService, private Auth: AuthService) { }
 
   ngOnInit() {
