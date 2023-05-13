@@ -1,4 +1,5 @@
 import { Injectable }                               from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth }                                     from 'aws-amplify';
 import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 
@@ -19,7 +20,7 @@ export class AuthService {
     return this.user$.asObservable();
   }
 
-  constructor() {
+  constructor(private route: Router) {
     if (localStorage.getItem('user')) {
       const user = JSON.parse(localStorage.getItem('user') || '{}');
       this.user$.next(user);
@@ -30,6 +31,7 @@ export class AuthService {
       localStorage.setItem('user', JSON.stringify(user));
     }).catch(() => {});
 
+    this.route.navigate(['/topics']);
   }
 
   async login(username: string, password: string) {

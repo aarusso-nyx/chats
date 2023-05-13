@@ -23,8 +23,8 @@ query FetchFrom($topicId: ID!, $createdAt: AWSDateTime!) {
     topicMessagesId
   }
 }
-query ListTopics($userId: String!) {
-  listTopics(userId: $userId) {
+query TopicsOf($userId: String!) {
+  topicsOf(userId: $userId) {
     id
     topic
     descr
@@ -39,84 +39,5 @@ query ListTopics($userId: String!) {
     }
     createdAt
     updatedAt
-  }
-}
-query ListSubscriptions(
-  $filter: ModelSubscribeFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listSubscriptions(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      topicId
-      userId
-      owner
-      expiresAt
-      acked
-      active
-      createdAt
-      updatedAt
-      topicSubscriptionsId
-    }
-    nextToken
-  }
-}
-query SubscribesByTopicId(
-  $topicId: ID!
-  $sortDirection: ModelSortDirection
-  $filter: ModelSubscribeFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  subscribesByTopicId(
-    topicId: $topicId
-    sortDirection: $sortDirection
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      topicId
-      userId
-      owner
-      expiresAt
-      acked
-      active
-      createdAt
-      updatedAt
-      topicSubscriptionsId
-    }
-    nextToken
-  }
-}
-query SubscribesByUserId(
-  $userId: String!
-  $sortDirection: ModelSortDirection
-  $filter: ModelSubscribeFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  subscribesByUserId(
-    userId: $userId
-    sortDirection: $sortDirection
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      topicId
-      userId
-      owner
-      expiresAt
-      acked
-      active
-      createdAt
-      updatedAt
-      topicSubscriptionsId
-    }
-    nextToken
   }
 }

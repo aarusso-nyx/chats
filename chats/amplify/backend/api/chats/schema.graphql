@@ -1,47 +1,49 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+# input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+
+# input AMPLIFY { globalAuthRule: AuthRule = { allow: private } } # FOR TESTING ONLY!
 
 type Topic
   @aws_cognito_user_pools
-  @model(queries: null, mutations: { create: "createTopic", update: "updateTopic", delete: null }, subscriptions: null)
-  @auth(rules: [{ allow: owner,   operations: [read, create]},
+  @model
+  @auth(rules: [{ allow: owner },
                 { allow: private, operations: [read] }])
 {
   id: ID!
   topic: String!
   descr: String
   owner: String
-  n_msgs: Int!
-  n_subs: Int!
+  n_msgs: Int @default(value: "0") 
+  n_subs: Int @default(value: "0") 
   
-  subscriptions: [Subscribe] @hasMany
-  messages:      [Message]   @hasMany
+  subscriptions: [Subscribe] @hasMany (indexName: "getByTopic")
+  messages:      [Message]   @hasMany (indexName: "getByTopic")
 }
 
 
 type Message
   @aws_cognito_user_pools
-  @model(queries: null, mutations: { create: "createMessage", update: null, delete: "deleteMessage" }, subscriptions: null, timestamps: { updatedAt: null })
+  @model
   @auth(rules: [{ allow: owner,   operations: [read, create, delete]},
                 { allow: private, operations: [read] }])
 {
   id: ID!
   owner: String
-  topicId: ID!  
+  topicId: ID!   @index(name: "getByTopic", sortKeyFields: ["createdAt"])
   payload: AWSJSON!
   attachs: [AWSURL]
-  
-  topic: Topic! @belongsTo(fields: ["topicId"])
-  status: [Status] @hasMany
+  createdAt: AWSDateTime 
+  status: [Status] @hasMany(indexName: "getByMessage")
 }
 
 
 
 type Subscribe
   @aws_cognito_user_pools
-  @model(queries: { list: "listSubscriptions"}, subscriptions: null)
-  @auth(rules: [{ allow: owner,   operations: [create, read, delete]},
+  @model
+  @auth(rules: [{ allow: owner },
                 { allow: private, operations: [read] }])
 {
   id: ID!
@@ -49,10 +51,10 @@ type Subscribe
   userId: String! @index(name: "getByUser")
   owner: String
   
-  expiresAt: AWSDateTime
+  expiresAt: AWSDateTime @default(value: "1969-12-31T00:00:00.000Z")
 
-  acked:  Boolean! @default(value: "false") 
-  active: Boolean! @default(value: "true")
+  acked:  Boolean @default(value: "false") 
+  active: Boolean @default(value: "true")
 }
 
 
@@ -64,32 +66,9 @@ type Status
                 { allow: private, operations: [read] }])
 {
   id: ID!
-  messageId: ID!
+  messageId: ID! @index(name: "getByMessage")
   owner: String @auth(rules: [{ allow: owner, operations: [read] }])
 
   acked:  Boolean @default(value: "false") 
   active: Boolean @default(value: "true")
-}
-
-# Extended queries and subscriptions
-#type Query {
-#  fetchFrom(topicId: ID!, createdAt: AWSDateTime!): [Message] @aws_cognito_user_pools
-#  listTopics(userId: String!): [Topic] @aws_cognito_user_pools
-#}
-
-
-type Mutation {
-  postMessage(message: MessageInput!): Message @aws_cognito_user_pools
-}
-
-input MessageInput {
-  owner: String!
-  topicId: ID!  
-  payload: AWSJSON!
-  attachs: [AWSURL]
-}
-
-
-type Subscription {
-  onSubscribed(userId: String!): Subscribe @aws_subscribe(mutations: ["createSubscribe"])
 }

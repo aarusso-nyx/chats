@@ -1,20 +1,37 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TopicComponent } from './topic/topic.component';
-import { TopicsListComponent } from './topics-list/topics-list.component';
+import { TopicsComponent } from './topics/topics.component';
+import { ChatComponent } from './chat/chat.component';
+import { SubsComponent } from './subs/subs.component';
 
-const routes: Routes = [{
+const routes: Routes = [
+  {
     path: 'topics',
-    component: TopicsListComponent
-  }, {
-    path: 'topics/:topic',
-    component: TopicComponent
+    children: [
+      {
+        path: '',
+        component: TopicsComponent
+      }, 
+      {
+        path: ':id',
+        children: [
+          {
+            path: '',
+            component: ChatComponent
+          },
+          {
+            path: 'subs',
+            component: SubsComponent
+          }
+        ]
+      }
+    ]
   },
-{
-  path: '',
-  pathMatch: 'full',
-  redirectTo: '/topics',
-}, 
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/topics',
+  }, 
   { path: '**', redirectTo: '/topics' }
 ];
 

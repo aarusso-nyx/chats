@@ -1,28 +1,4 @@
 # this is an auto generated file. This will be overwritten
-mutation PostMessage($message: MessageInput!) {
-  postMessage(message: $message) {
-    id
-    owner
-    topicId
-    payload
-    attachs
-    topic {
-      id
-      topic
-      descr
-      owner
-      n_msgs
-      n_subs
-      createdAt
-      updatedAt
-    }
-    status {
-      nextToken
-    }
-    createdAt
-    topicMessagesId
-  }
-}
 mutation CreateTopic(
   $input: CreateTopicInput!
   $condition: ModelTopicConditionInput
@@ -65,6 +41,27 @@ mutation UpdateTopic(
     updatedAt
   }
 }
+mutation DeleteTopic(
+  $input: DeleteTopicInput!
+  $condition: ModelTopicConditionInput
+) {
+  deleteTopic(input: $input, condition: $condition) {
+    id
+    topic
+    descr
+    owner
+    n_msgs
+    n_subs
+    subscriptions {
+      nextToken
+    }
+    messages {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
 mutation CreateMessage(
   $input: CreateMessageInput!
   $condition: ModelMessageConditionInput
@@ -75,20 +72,29 @@ mutation CreateMessage(
     topicId
     payload
     attachs
-    topic {
-      id
-      topic
-      descr
-      owner
-      n_msgs
-      n_subs
-      createdAt
-      updatedAt
-    }
+    createdAt
     status {
       nextToken
     }
+    updatedAt
+    topicMessagesId
+  }
+}
+mutation UpdateMessage(
+  $input: UpdateMessageInput!
+  $condition: ModelMessageConditionInput
+) {
+  updateMessage(input: $input, condition: $condition) {
+    id
+    owner
+    topicId
+    payload
+    attachs
     createdAt
+    status {
+      nextToken
+    }
+    updatedAt
     topicMessagesId
   }
 }
@@ -102,20 +108,11 @@ mutation DeleteMessage(
     topicId
     payload
     attachs
-    topic {
-      id
-      topic
-      descr
-      owner
-      n_msgs
-      n_subs
-      createdAt
-      updatedAt
-    }
+    createdAt
     status {
       nextToken
     }
-    createdAt
+    updatedAt
     topicMessagesId
   }
 }

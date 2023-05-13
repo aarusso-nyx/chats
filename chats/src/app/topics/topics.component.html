@@ -1,0 +1,28 @@
+
+
+
+<h2>Create Topic</h2>
+<form (ngSubmit)="createTopic()">
+  <div>
+    <label for="topicInput">Topic:</label>
+    <input id="topicInput" type="text" [(ngModel)]="newTopic.topic" name="topic" required>
+  </div>
+  <div>
+    <label for="descrInput">Description:</label>
+    <input id="descrInput" type="text" [(ngModel)]="newTopic.descr" name="descr">
+  </div>
+  <button type="submit">Submit</button>
+</form>
+
+<h2>Topic List</h2>
+<ul>
+  <li *ngFor="let topic of topics">
+    <a [routerLink]="['/topics', topic.id]">
+      <span>{{ topic.descr }}</span>
+    </a>
+    <a [routerLink]="['/topics', topic.id, 'subs']">
+      <span>{{ topic.topic }}</span>
+    </a>
+    <button (click)="deleteTopic(topic.id)">Delete</button>
+  </li>
+</ul>
