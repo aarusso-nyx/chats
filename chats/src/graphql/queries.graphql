@@ -1,30 +1,6 @@
 # this is an auto generated file. This will be overwritten
-query FetchFrom($topicId: ID!, $createdAt: AWSDateTime!) {
-  fetchFrom(topicId: $topicId, createdAt: $createdAt) {
-    id
-    owner
-    topicId
-    payload
-    attachs
-    topic {
-      id
-      topic
-      descr
-      owner
-      n_msgs
-      n_subs
-      createdAt
-      updatedAt
-    }
-    status {
-      nextToken
-    }
-    createdAt
-    topicMessagesId
-  }
-}
-query TopicsOf($userId: String!) {
-  topicsOf(userId: $userId) {
+query GetTopic($id: ID!) {
+  getTopic(id: $id) {
     id
     topic
     descr
@@ -39,5 +15,207 @@ query TopicsOf($userId: String!) {
     }
     createdAt
     updatedAt
+  }
+}
+query ListTopics(
+  $filter: ModelTopicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTopics(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      topic
+      descr
+      owner
+      n_msgs
+      n_subs
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+query GetMessage($id: ID!) {
+  getMessage(id: $id) {
+    id
+    owner
+    topicId
+    payload
+    attachs
+    createdAt
+    status {
+      nextToken
+    }
+    updatedAt
+    topicMessagesId
+  }
+}
+query ListMessages(
+  $filter: ModelMessageFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      owner
+      topicId
+      payload
+      attachs
+      createdAt
+      updatedAt
+      topicMessagesId
+    }
+    nextToken
+  }
+}
+query GetSubscribe($id: ID!) {
+  getSubscribe(id: $id) {
+    id
+    topicId
+    userId
+    owner
+    expiresAt
+    acked
+    active
+    createdAt
+    updatedAt
+    topicSubscriptionsId
+  }
+}
+query ListSubscribes(
+  $filter: ModelSubscribeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSubscribes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      topicId
+      userId
+      owner
+      expiresAt
+      acked
+      active
+      createdAt
+      updatedAt
+      topicSubscriptionsId
+    }
+    nextToken
+  }
+}
+query MessagesByTopicIdAndCreatedAt(
+  $topicId: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelMessageFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  messagesByTopicIdAndCreatedAt(
+    topicId: $topicId
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      owner
+      topicId
+      payload
+      attachs
+      createdAt
+      updatedAt
+      topicMessagesId
+    }
+    nextToken
+  }
+}
+query SubscribesByTopicId(
+  $topicId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSubscribeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  subscribesByTopicId(
+    topicId: $topicId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      topicId
+      userId
+      owner
+      expiresAt
+      acked
+      active
+      createdAt
+      updatedAt
+      topicSubscriptionsId
+    }
+    nextToken
+  }
+}
+query SubscribesByUserId(
+  $userId: String!
+  $sortDirection: ModelSortDirection
+  $filter: ModelSubscribeFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  subscribesByUserId(
+    userId: $userId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      topicId
+      userId
+      owner
+      expiresAt
+      acked
+      active
+      createdAt
+      updatedAt
+      topicSubscriptionsId
+    }
+    nextToken
+  }
+}
+query StatusesByMessageId(
+  $messageId: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelStatusFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  statusesByMessageId(
+    messageId: $messageId
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      messageId
+      owner
+      acked
+      active
+      createdAt
+      updatedAt
+      messageStatusId
+    }
+    nextToken
   }
 }
