@@ -32,6 +32,8 @@ export class AuthService {
     }).catch(() => {});
 
     this.route.navigate(['/topics']);
+    
+    
   }
 
   async login(username: string, password: string) {

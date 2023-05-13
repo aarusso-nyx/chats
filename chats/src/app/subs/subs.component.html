@@ -1,5 +1,9 @@
 <h1>Subs</h1>
 
+<p>{{ topic | json }}</p>
+<a [routerLink]="['..']">Chat</a>
+
+<h3>Subscriptions</h3>
 <div *ngFor="let s of subs">
     {{ s | json }}
 </div>

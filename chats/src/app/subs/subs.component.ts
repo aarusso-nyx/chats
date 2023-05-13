@@ -1,54 +1,39 @@
-import { Component } from '@angular/core';
-import { APIService, Subscribe } from '../API.service';
+import { Component, OnInit } from '@angular/core';
+import { APIService, Subscribe, Topic } from '../API.service';
 import { ActivatedRoute } from '@angular/router';
-import  { API, graphqlOperation } from 'aws-amplify';
-
-
-
 
 
 async function fetchCognitoUsers() {
-  try {
-    const getUsersQuery = `query ListUsers {
-      listUsers {
-        items {
-          username
-          email
-          # Add any other desired user attributes
-        }
-      }
-    }`;
-
-    const response = await API.graphql(graphqlOperation(getUsersQuery));
-    // const users = response.data.listUsers.items;
-    console.log('Cognito Users:', response);
-  } catch (error) {
-    console.error('Error fetching Cognito users:', error);
-  }
+  let users:any = [];
+  
+  return users;
 }
 
 
 
-// import 
 @Component({
   selector: 'app-subs',
   templateUrl: './subs.component.html',
   styleUrls: ['./subs.component.scss']
 })
-export class SubsComponent {
+export class SubsComponent implements OnInit {
   id!: string;
   subs: Subscribe[] = [];
-  
-  constructor(
-    private route: ActivatedRoute,
-    private API: APIService
-  ) {}
+  users: any[] = [];
+  topic?: Topic;
 
-  ngInit() {
-    fetchCognitoUsers();
+  constructor(private API: APIService, private route: ActivatedRoute) {}
 
-    this.route.params.subscribe( (params) => {
-      this.id = params['get']('id');
+
+  async ngOnInit() {
+    this.users = await fetchCognitoUsers();
+
+    this.route.params.subscribe( ({ id }) => {
+      this.id = id;
+      this.API.GetTopic(this.id)
+          .then(topic => {
+            this.topic = topic as Topic;
+          });
       this.fetchSubs();
     });
   }
@@ -71,4 +56,10 @@ export class SubsComponent {
         });
   }
 
+  delSub(id: string) {
+    this.API.DeleteSubscribe({ id })
+        .then( () => {
+          this.subs = this.subs.filter( (sub) => sub.id !== id);
+        });
+  }
 }

@@ -1,7 +1,9 @@
 <H1>CHATS</H1>
 
-<h2>{{ topic | json }}</h2>
+<p>{{ topic | json }}</p>
+<a [routerLink]="['subs']">Subscriptions</a>
 
+<h3>MESSAGES</h3>
 
 <div *ngFor="let m of messages">
     {{ m | json }}
