@@ -1,0 +1,7 @@
+[
+  {
+    "Effect": "Allow",
+    "Action": ["cognito-idp:ListUsers"],
+    "Resource": ["arn:aws:cognito-idp:sa-east-1:577026419139:userpool/sa-east-1_k5XPbk74g"]
+  }
+]

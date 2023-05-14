@@ -20,6 +20,12 @@
       },
       "api": {
         "chats": {}
+      },
+      "function": {
+        "listUsers": {
+          "deploymentBucketName": "amplify-chats-staging-225707-deployment",
+          "s3Key": "amplify-builds/listUsers-64664e34425847564862-build.zip"
+        }
       }
     }
   },

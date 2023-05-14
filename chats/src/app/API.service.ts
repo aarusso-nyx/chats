@@ -274,6 +274,14 @@ export type DeleteSubscribeInput = {
   id: string;
 };
 
+export type CognitoUser = {
+  __typename: "CognitoUser";
+  username: string;
+  email?: string | null;
+  name?: string | null;
+  sub?: string | null;
+};
+
 export type ModelTopicFilterInput = {
   id?: ModelIDInput | null;
   topic?: ModelStringInput | null;
@@ -572,6 +580,14 @@ export type DeleteSubscribeMutation = {
   createdAt: string;
   updatedAt: string;
   topicSubscriptionsId?: string | null;
+};
+
+export type ListCognitoUsersQuery = {
+  __typename: "CognitoUser";
+  username: string;
+  email?: string | null;
+  name?: string | null;
+  sub?: string | null;
 };
 
 export type GetTopicQuery = {
@@ -1189,6 +1205,19 @@ export class APIService {
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
     return <DeleteSubscribeMutation>response.data.deleteSubscribe;
+  }
+  async ListCognitoUsers(): Promise<Array<ListCognitoUsersQuery>> {
+    const statement = `query ListCognitoUsers {
+        listCognitoUsers {
+          __typename
+          username
+          email
+          name
+          sub
+        }
+      }`;
+    const response = (await API.graphql(graphqlOperation(statement))) as any;
+    return <Array<ListCognitoUsersQuery>>response.data.listCognitoUsers;
   }
   async GetTopic(id: string): Promise<GetTopicQuery> {
     const statement = `query GetTopic($id: ID!) {

@@ -4,6 +4,24 @@
 <a [routerLink]="['..']">Chat</a>
 
 <h3>Subscriptions</h3>
-<div *ngFor="let s of subs">
+
+
+
+<!-- <div *ngFor="let s of subs">
     {{ s | json }}
-</div>
+</div> -->
+
+<div>
+    <label for="userId">User:</label>
+    <select id="userId" #user>
+      <option *ngFor="let u of users" [value]="u.username">{{ u.name }}</option>
+    </select>
+    <button (click)="addSub(user.value)">Subscribe</button>
+  </div>
+
+  <ul>
+    <li *ngFor="let s of subs">
+      {{ s.userId }} - {{ s.topicId }}
+      <button (click)="delSub(s.id)">Delete</button>
+    </li>
+  </ul>

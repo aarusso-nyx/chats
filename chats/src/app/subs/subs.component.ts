@@ -1,18 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService, Subscribe, Topic } from '../API.service';
 import { ActivatedRoute } from '@angular/router';
-
-
-async function fetchCognitoUsers() {
-  let users:any = [];
-  
-  return users;
-}
-
+import { APIService, Subscribe, Topic } from '../API.service';
 
 
 @Component({
-  selector: 'app-subs',
   templateUrl: './subs.component.html',
   styleUrls: ['./subs.component.scss']
 })
@@ -20,13 +11,15 @@ export class SubsComponent implements OnInit {
   id!: string;
   subs: Subscribe[] = [];
   users: any[] = [];
+  allUsers: any[] = [];
   topic?: Topic;
 
   constructor(private API: APIService, private route: ActivatedRoute) {}
 
 
   async ngOnInit() {
-    this.users = await fetchCognitoUsers();
+    this.allUsers = await this.API.ListCognitoUsers();
+    // console.log( this.users );
 
     this.route.params.subscribe( ({ id }) => {
       this.id = id;
@@ -42,10 +35,13 @@ export class SubsComponent implements OnInit {
     this.API.ListSubscribes({ topicId: { eq: this.id }})
         .then( ({ items }) => {
           this.subs = items.map( (item) => (item as Subscribe));
+
+          const userIds = this.subs.map( (sub) => sub.userId);
+          this.users = this.allUsers.filter((u) => !userIds.includes(u.username));
         });
   }
 
-  createSub(userId: string) {
+  addSub(userId: string) {
     const input = {
       topicId: this.id,
       userId: userId
@@ -53,13 +49,18 @@ export class SubsComponent implements OnInit {
     this.API.CreateSubscribe(input)
         .then( (sub) => {
           this.subs.push(sub as Subscribe);
+          this.users = this.users.filter( (u) => u.username !== userId);
         });
   }
 
   delSub(id: string) {
     this.API.DeleteSubscribe({ id })
         .then( () => {
+
           this.subs = this.subs.filter( (sub) => sub.id !== id);
+          const userIds = this.subs.map( (sub) => sub.userId);
+          this.users = this.allUsers.filter((u) => !userIds.includes(u.username));
+
         });
   }
 }

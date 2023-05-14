@@ -1,4 +1,12 @@
 # this is an auto generated file. This will be overwritten
+query ListCognitoUsers {
+  listCognitoUsers {
+    username
+    email
+    name
+    sub
+  }
+}
 query GetTopic($id: ID!) {
   getTopic(id: $id) {
     id

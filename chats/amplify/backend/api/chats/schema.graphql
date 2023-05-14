@@ -72,3 +72,15 @@ type Status
   acked:  Boolean @default(value: "false") 
   active: Boolean @default(value: "true")
 }
+
+
+
+type Query {
+  listCognitoUsers: [CognitoUser!]! @function(name: "listUsers-${env}")
+}
+
+type CognitoUser {
+  username: String!
+  email: String
+  name: String
+}
