@@ -27,6 +27,7 @@ export class SubsComponent implements OnInit {
           .then(topic => {
             this.topic = topic as Topic;
           });
+
       this.fetchSubs();
     });
   }
@@ -36,7 +37,7 @@ export class SubsComponent implements OnInit {
         .then( ({ items }) => {
           this.subs = items.map( (item) => (item as Subscribe));
 
-          const userIds = this.subs.map( (sub) => sub.userId);
+          const userIds = this.subs.map( (sub) => sub.username);
           this.users = this.allUsers.filter((u) => !userIds.includes(u.username));
         });
   }
@@ -44,7 +45,7 @@ export class SubsComponent implements OnInit {
   addSub(userId: string) {
     const input = {
       topicId: this.id,
-      userId: userId
+      username: userId
     };
     this.API.CreateSubscribe(input)
         .then( (sub) => {
@@ -58,7 +59,7 @@ export class SubsComponent implements OnInit {
         .then( () => {
 
           this.subs = this.subs.filter( (sub) => sub.id !== id);
-          const userIds = this.subs.map( (sub) => sub.userId);
+          const userIds = this.subs.map( (sub) => sub.username);
           this.users = this.allUsers.filter((u) => !userIds.includes(u.username));
 
         });

@@ -116,7 +116,7 @@ export type Subscribe = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -137,7 +137,7 @@ export type Message = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: ModelStatusConnection | null;
@@ -180,7 +180,7 @@ export type CreateMessageInput = {
   id?: string | null;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   topicMessagesId?: string | null;
@@ -231,7 +231,7 @@ export type DeleteMessageInput = {
 export type CreateSubscribeInput = {
   id?: string | null;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -241,7 +241,7 @@ export type CreateSubscribeInput = {
 
 export type ModelSubscribeConditionInput = {
   topicId?: ModelIDInput | null;
-  userId?: ModelStringInput | null;
+  username?: ModelStringInput | null;
   owner?: ModelStringInput | null;
   expiresAt?: ModelStringInput | null;
   acked?: ModelBooleanInput | null;
@@ -262,7 +262,7 @@ export type ModelBooleanInput = {
 export type UpdateSubscribeInput = {
   id: string;
   topicId?: string | null;
-  userId?: string | null;
+  username?: string | null;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -279,7 +279,6 @@ export type CognitoUser = {
   username: string;
   email?: string | null;
   name?: string | null;
-  sub?: string | null;
 };
 
 export type ModelTopicFilterInput = {
@@ -316,7 +315,7 @@ export type ModelMessageFilterInput = {
 export type ModelSubscribeFilterInput = {
   id?: ModelIDInput | null;
   topicId?: ModelIDInput | null;
-  userId?: ModelStringInput | null;
+  username?: ModelStringInput | null;
   owner?: ModelStringInput | null;
   expiresAt?: ModelStringInput | null;
   acked?: ModelBooleanInput | null;
@@ -419,7 +418,7 @@ export type ModelSubscriptionMessageFilterInput = {
 export type ModelSubscriptionSubscribeFilterInput = {
   id?: ModelSubscriptionIDInput | null;
   topicId?: ModelSubscriptionIDInput | null;
-  userId?: ModelSubscriptionStringInput | null;
+  username?: ModelSubscriptionStringInput | null;
   expiresAt?: ModelSubscriptionStringInput | null;
   acked?: ModelSubscriptionBooleanInput | null;
   active?: ModelSubscriptionBooleanInput | null;
@@ -442,10 +441,34 @@ export type CreateTopicMutation = {
   n_subs?: number | null;
   subscriptions?: {
     __typename: "ModelSubscribeConnection";
+    items: Array<{
+      __typename: "Subscribe";
+      id: string;
+      topicId: string;
+      username: string;
+      owner?: string | null;
+      expiresAt?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      topicSubscriptionsId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   messages?: {
     __typename: "ModelMessageConnection";
+    items: Array<{
+      __typename: "Message";
+      id: string;
+      owner?: string | null;
+      topicId: string;
+      payload?: string | null;
+      attachs?: Array<string | null> | null;
+      createdAt?: string | null;
+      updatedAt: string;
+      topicMessagesId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   createdAt: string;
@@ -462,10 +485,34 @@ export type UpdateTopicMutation = {
   n_subs?: number | null;
   subscriptions?: {
     __typename: "ModelSubscribeConnection";
+    items: Array<{
+      __typename: "Subscribe";
+      id: string;
+      topicId: string;
+      username: string;
+      owner?: string | null;
+      expiresAt?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      topicSubscriptionsId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   messages?: {
     __typename: "ModelMessageConnection";
+    items: Array<{
+      __typename: "Message";
+      id: string;
+      owner?: string | null;
+      topicId: string;
+      payload?: string | null;
+      attachs?: Array<string | null> | null;
+      createdAt?: string | null;
+      updatedAt: string;
+      topicMessagesId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   createdAt: string;
@@ -482,10 +529,34 @@ export type DeleteTopicMutation = {
   n_subs?: number | null;
   subscriptions?: {
     __typename: "ModelSubscribeConnection";
+    items: Array<{
+      __typename: "Subscribe";
+      id: string;
+      topicId: string;
+      username: string;
+      owner?: string | null;
+      expiresAt?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      topicSubscriptionsId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   messages?: {
     __typename: "ModelMessageConnection";
+    items: Array<{
+      __typename: "Message";
+      id: string;
+      owner?: string | null;
+      topicId: string;
+      payload?: string | null;
+      attachs?: Array<string | null> | null;
+      createdAt?: string | null;
+      updatedAt: string;
+      topicMessagesId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   createdAt: string;
@@ -497,11 +568,22 @@ export type CreateMessageMutation = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: {
     __typename: "ModelStatusConnection";
+    items: Array<{
+      __typename: "Status";
+      id: string;
+      messageId: string;
+      owner?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      messageStatusId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   updatedAt: string;
@@ -513,11 +595,22 @@ export type UpdateMessageMutation = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: {
     __typename: "ModelStatusConnection";
+    items: Array<{
+      __typename: "Status";
+      id: string;
+      messageId: string;
+      owner?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      messageStatusId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   updatedAt: string;
@@ -529,11 +622,22 @@ export type DeleteMessageMutation = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: {
     __typename: "ModelStatusConnection";
+    items: Array<{
+      __typename: "Status";
+      id: string;
+      messageId: string;
+      owner?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      messageStatusId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   updatedAt: string;
@@ -544,7 +648,7 @@ export type CreateSubscribeMutation = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -558,7 +662,7 @@ export type UpdateSubscribeMutation = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -572,7 +676,7 @@ export type DeleteSubscribeMutation = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -587,7 +691,6 @@ export type ListCognitoUsersQuery = {
   username: string;
   email?: string | null;
   name?: string | null;
-  sub?: string | null;
 };
 
 export type GetTopicQuery = {
@@ -600,10 +703,34 @@ export type GetTopicQuery = {
   n_subs?: number | null;
   subscriptions?: {
     __typename: "ModelSubscribeConnection";
+    items: Array<{
+      __typename: "Subscribe";
+      id: string;
+      topicId: string;
+      username: string;
+      owner?: string | null;
+      expiresAt?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      topicSubscriptionsId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   messages?: {
     __typename: "ModelMessageConnection";
+    items: Array<{
+      __typename: "Message";
+      id: string;
+      owner?: string | null;
+      topicId: string;
+      payload?: string | null;
+      attachs?: Array<string | null> | null;
+      createdAt?: string | null;
+      updatedAt: string;
+      topicMessagesId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   createdAt: string;
@@ -620,6 +747,14 @@ export type ListTopicsQuery = {
     owner?: string | null;
     n_msgs?: number | null;
     n_subs?: number | null;
+    subscriptions?: {
+      __typename: "ModelSubscribeConnection";
+      nextToken?: string | null;
+    } | null;
+    messages?: {
+      __typename: "ModelMessageConnection";
+      nextToken?: string | null;
+    } | null;
     createdAt: string;
     updatedAt: string;
   } | null>;
@@ -631,11 +766,22 @@ export type GetMessageQuery = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: {
     __typename: "ModelStatusConnection";
+    items: Array<{
+      __typename: "Status";
+      id: string;
+      messageId: string;
+      owner?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      messageStatusId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   updatedAt: string;
@@ -649,9 +795,13 @@ export type ListMessagesQuery = {
     id: string;
     owner?: string | null;
     topicId: string;
-    payload: string;
+    payload?: string | null;
     attachs?: Array<string | null> | null;
     createdAt?: string | null;
+    status?: {
+      __typename: "ModelStatusConnection";
+      nextToken?: string | null;
+    } | null;
     updatedAt: string;
     topicMessagesId?: string | null;
   } | null>;
@@ -662,7 +812,7 @@ export type GetSubscribeQuery = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -678,7 +828,7 @@ export type ListSubscribesQuery = {
     __typename: "Subscribe";
     id: string;
     topicId: string;
-    userId: string;
+    username: string;
     owner?: string | null;
     expiresAt?: string | null;
     acked?: boolean | null;
@@ -697,9 +847,13 @@ export type MessagesByTopicIdAndCreatedAtQuery = {
     id: string;
     owner?: string | null;
     topicId: string;
-    payload: string;
+    payload?: string | null;
     attachs?: Array<string | null> | null;
     createdAt?: string | null;
+    status?: {
+      __typename: "ModelStatusConnection";
+      nextToken?: string | null;
+    } | null;
     updatedAt: string;
     topicMessagesId?: string | null;
   } | null>;
@@ -712,7 +866,7 @@ export type SubscribesByTopicIdQuery = {
     __typename: "Subscribe";
     id: string;
     topicId: string;
-    userId: string;
+    username: string;
     owner?: string | null;
     expiresAt?: string | null;
     acked?: boolean | null;
@@ -724,13 +878,13 @@ export type SubscribesByTopicIdQuery = {
   nextToken?: string | null;
 };
 
-export type SubscribesByUserIdQuery = {
+export type SubscribesByUsernameQuery = {
   __typename: "ModelSubscribeConnection";
   items: Array<{
     __typename: "Subscribe";
     id: string;
     topicId: string;
-    userId: string;
+    username: string;
     owner?: string | null;
     expiresAt?: string | null;
     acked?: boolean | null;
@@ -768,10 +922,34 @@ export type OnCreateTopicSubscription = {
   n_subs?: number | null;
   subscriptions?: {
     __typename: "ModelSubscribeConnection";
+    items: Array<{
+      __typename: "Subscribe";
+      id: string;
+      topicId: string;
+      username: string;
+      owner?: string | null;
+      expiresAt?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      topicSubscriptionsId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   messages?: {
     __typename: "ModelMessageConnection";
+    items: Array<{
+      __typename: "Message";
+      id: string;
+      owner?: string | null;
+      topicId: string;
+      payload?: string | null;
+      attachs?: Array<string | null> | null;
+      createdAt?: string | null;
+      updatedAt: string;
+      topicMessagesId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   createdAt: string;
@@ -788,10 +966,34 @@ export type OnUpdateTopicSubscription = {
   n_subs?: number | null;
   subscriptions?: {
     __typename: "ModelSubscribeConnection";
+    items: Array<{
+      __typename: "Subscribe";
+      id: string;
+      topicId: string;
+      username: string;
+      owner?: string | null;
+      expiresAt?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      topicSubscriptionsId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   messages?: {
     __typename: "ModelMessageConnection";
+    items: Array<{
+      __typename: "Message";
+      id: string;
+      owner?: string | null;
+      topicId: string;
+      payload?: string | null;
+      attachs?: Array<string | null> | null;
+      createdAt?: string | null;
+      updatedAt: string;
+      topicMessagesId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   createdAt: string;
@@ -808,10 +1010,34 @@ export type OnDeleteTopicSubscription = {
   n_subs?: number | null;
   subscriptions?: {
     __typename: "ModelSubscribeConnection";
+    items: Array<{
+      __typename: "Subscribe";
+      id: string;
+      topicId: string;
+      username: string;
+      owner?: string | null;
+      expiresAt?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      topicSubscriptionsId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   messages?: {
     __typename: "ModelMessageConnection";
+    items: Array<{
+      __typename: "Message";
+      id: string;
+      owner?: string | null;
+      topicId: string;
+      payload?: string | null;
+      attachs?: Array<string | null> | null;
+      createdAt?: string | null;
+      updatedAt: string;
+      topicMessagesId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   createdAt: string;
@@ -823,11 +1049,22 @@ export type OnCreateMessageSubscription = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: {
     __typename: "ModelStatusConnection";
+    items: Array<{
+      __typename: "Status";
+      id: string;
+      messageId: string;
+      owner?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      messageStatusId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   updatedAt: string;
@@ -839,11 +1076,22 @@ export type OnUpdateMessageSubscription = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: {
     __typename: "ModelStatusConnection";
+    items: Array<{
+      __typename: "Status";
+      id: string;
+      messageId: string;
+      owner?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      messageStatusId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   updatedAt: string;
@@ -855,11 +1103,22 @@ export type OnDeleteMessageSubscription = {
   id: string;
   owner?: string | null;
   topicId: string;
-  payload: string;
+  payload?: string | null;
   attachs?: Array<string | null> | null;
   createdAt?: string | null;
   status?: {
     __typename: "ModelStatusConnection";
+    items: Array<{
+      __typename: "Status";
+      id: string;
+      messageId: string;
+      owner?: string | null;
+      acked?: boolean | null;
+      active?: boolean | null;
+      createdAt: string;
+      updatedAt: string;
+      messageStatusId?: string | null;
+    } | null>;
     nextToken?: string | null;
   } | null;
   updatedAt: string;
@@ -870,7 +1129,7 @@ export type OnCreateSubscribeSubscription = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -884,7 +1143,7 @@ export type OnUpdateSubscribeSubscription = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -898,7 +1157,7 @@ export type OnDeleteSubscribeSubscription = {
   __typename: "Subscribe";
   id: string;
   topicId: string;
-  userId: string;
+  username: string;
   owner?: string | null;
   expiresAt?: string | null;
   acked?: boolean | null;
@@ -927,10 +1186,34 @@ export class APIService {
           n_subs
           subscriptions {
             __typename
+            items {
+              __typename
+              id
+              topicId
+              username
+              owner
+              expiresAt
+              acked
+              active
+              createdAt
+              updatedAt
+              topicSubscriptionsId
+            }
             nextToken
           }
           messages {
             __typename
+            items {
+              __typename
+              id
+              owner
+              topicId
+              payload
+              attachs
+              createdAt
+              updatedAt
+              topicMessagesId
+            }
             nextToken
           }
           createdAt
@@ -963,10 +1246,34 @@ export class APIService {
           n_subs
           subscriptions {
             __typename
+            items {
+              __typename
+              id
+              topicId
+              username
+              owner
+              expiresAt
+              acked
+              active
+              createdAt
+              updatedAt
+              topicSubscriptionsId
+            }
             nextToken
           }
           messages {
             __typename
+            items {
+              __typename
+              id
+              owner
+              topicId
+              payload
+              attachs
+              createdAt
+              updatedAt
+              topicMessagesId
+            }
             nextToken
           }
           createdAt
@@ -999,10 +1306,34 @@ export class APIService {
           n_subs
           subscriptions {
             __typename
+            items {
+              __typename
+              id
+              topicId
+              username
+              owner
+              expiresAt
+              acked
+              active
+              createdAt
+              updatedAt
+              topicSubscriptionsId
+            }
             nextToken
           }
           messages {
             __typename
+            items {
+              __typename
+              id
+              owner
+              topicId
+              payload
+              attachs
+              createdAt
+              updatedAt
+              topicMessagesId
+            }
             nextToken
           }
           createdAt
@@ -1035,6 +1366,17 @@ export class APIService {
           createdAt
           status {
             __typename
+            items {
+              __typename
+              id
+              messageId
+              owner
+              acked
+              active
+              createdAt
+              updatedAt
+              messageStatusId
+            }
             nextToken
           }
           updatedAt
@@ -1067,6 +1409,17 @@ export class APIService {
           createdAt
           status {
             __typename
+            items {
+              __typename
+              id
+              messageId
+              owner
+              acked
+              active
+              createdAt
+              updatedAt
+              messageStatusId
+            }
             nextToken
           }
           updatedAt
@@ -1099,6 +1452,17 @@ export class APIService {
           createdAt
           status {
             __typename
+            items {
+              __typename
+              id
+              messageId
+              owner
+              acked
+              active
+              createdAt
+              updatedAt
+              messageStatusId
+            }
             nextToken
           }
           updatedAt
@@ -1125,7 +1489,7 @@ export class APIService {
           __typename
           id
           topicId
-          userId
+          username
           owner
           expiresAt
           acked
@@ -1155,7 +1519,7 @@ export class APIService {
           __typename
           id
           topicId
-          userId
+          username
           owner
           expiresAt
           acked
@@ -1185,7 +1549,7 @@ export class APIService {
           __typename
           id
           topicId
-          userId
+          username
           owner
           expiresAt
           acked
@@ -1213,7 +1577,6 @@ export class APIService {
           username
           email
           name
-          sub
         }
       }`;
     const response = (await API.graphql(graphqlOperation(statement))) as any;
@@ -1231,10 +1594,34 @@ export class APIService {
           n_subs
           subscriptions {
             __typename
+            items {
+              __typename
+              id
+              topicId
+              username
+              owner
+              expiresAt
+              acked
+              active
+              createdAt
+              updatedAt
+              topicSubscriptionsId
+            }
             nextToken
           }
           messages {
             __typename
+            items {
+              __typename
+              id
+              owner
+              topicId
+              payload
+              attachs
+              createdAt
+              updatedAt
+              topicMessagesId
+            }
             nextToken
           }
           createdAt
@@ -1265,6 +1652,14 @@ export class APIService {
             owner
             n_msgs
             n_subs
+            subscriptions {
+              __typename
+              nextToken
+            }
+            messages {
+              __typename
+              nextToken
+            }
             createdAt
             updatedAt
           }
@@ -1298,6 +1693,17 @@ export class APIService {
           createdAt
           status {
             __typename
+            items {
+              __typename
+              id
+              messageId
+              owner
+              acked
+              active
+              createdAt
+              updatedAt
+              messageStatusId
+            }
             nextToken
           }
           updatedAt
@@ -1328,6 +1734,10 @@ export class APIService {
             payload
             attachs
             createdAt
+            status {
+              __typename
+              nextToken
+            }
             updatedAt
             topicMessagesId
           }
@@ -1355,7 +1765,7 @@ export class APIService {
           __typename
           id
           topicId
-          userId
+          username
           owner
           expiresAt
           acked
@@ -1385,7 +1795,7 @@ export class APIService {
             __typename
             id
             topicId
-            userId
+            username
             owner
             expiresAt
             acked
@@ -1438,6 +1848,10 @@ export class APIService {
             payload
             attachs
             createdAt
+            status {
+              __typename
+              nextToken
+            }
             updatedAt
             topicMessagesId
           }
@@ -1489,7 +1903,7 @@ export class APIService {
             __typename
             id
             topicId
-            userId
+            username
             owner
             expiresAt
             acked
@@ -1521,16 +1935,16 @@ export class APIService {
     )) as any;
     return <SubscribesByTopicIdQuery>response.data.subscribesByTopicId;
   }
-  async SubscribesByUserId(
-    userId: string,
+  async SubscribesByUsername(
+    username: string,
     sortDirection?: ModelSortDirection,
     filter?: ModelSubscribeFilterInput,
     limit?: number,
     nextToken?: string
-  ): Promise<SubscribesByUserIdQuery> {
-    const statement = `query SubscribesByUserId($userId: String!, $sortDirection: ModelSortDirection, $filter: ModelSubscribeFilterInput, $limit: Int, $nextToken: String) {
-        subscribesByUserId(
-          userId: $userId
+  ): Promise<SubscribesByUsernameQuery> {
+    const statement = `query SubscribesByUsername($username: String!, $sortDirection: ModelSortDirection, $filter: ModelSubscribeFilterInput, $limit: Int, $nextToken: String) {
+        subscribesByUsername(
+          username: $username
           sortDirection: $sortDirection
           filter: $filter
           limit: $limit
@@ -1541,7 +1955,7 @@ export class APIService {
             __typename
             id
             topicId
-            userId
+            username
             owner
             expiresAt
             acked
@@ -1554,7 +1968,7 @@ export class APIService {
         }
       }`;
     const gqlAPIServiceArguments: any = {
-      userId
+      username
     };
     if (sortDirection) {
       gqlAPIServiceArguments.sortDirection = sortDirection;
@@ -1571,7 +1985,7 @@ export class APIService {
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
-    return <SubscribesByUserIdQuery>response.data.subscribesByUserId;
+    return <SubscribesByUsernameQuery>response.data.subscribesByUsername;
   }
   async StatusesByMessageId(
     messageId: string,
@@ -1640,10 +2054,34 @@ export class APIService {
           n_subs
           subscriptions {
             __typename
+            items {
+              __typename
+              id
+              topicId
+              username
+              owner
+              expiresAt
+              acked
+              active
+              createdAt
+              updatedAt
+              topicSubscriptionsId
+            }
             nextToken
           }
           messages {
             __typename
+            items {
+              __typename
+              id
+              owner
+              topicId
+              payload
+              attachs
+              createdAt
+              updatedAt
+              topicMessagesId
+            }
             nextToken
           }
           createdAt
@@ -1681,10 +2119,34 @@ export class APIService {
           n_subs
           subscriptions {
             __typename
+            items {
+              __typename
+              id
+              topicId
+              username
+              owner
+              expiresAt
+              acked
+              active
+              createdAt
+              updatedAt
+              topicSubscriptionsId
+            }
             nextToken
           }
           messages {
             __typename
+            items {
+              __typename
+              id
+              owner
+              topicId
+              payload
+              attachs
+              createdAt
+              updatedAt
+              topicMessagesId
+            }
             nextToken
           }
           createdAt
@@ -1722,10 +2184,34 @@ export class APIService {
           n_subs
           subscriptions {
             __typename
+            items {
+              __typename
+              id
+              topicId
+              username
+              owner
+              expiresAt
+              acked
+              active
+              createdAt
+              updatedAt
+              topicSubscriptionsId
+            }
             nextToken
           }
           messages {
             __typename
+            items {
+              __typename
+              id
+              owner
+              topicId
+              payload
+              attachs
+              createdAt
+              updatedAt
+              topicMessagesId
+            }
             nextToken
           }
           createdAt
@@ -1763,6 +2249,17 @@ export class APIService {
           createdAt
           status {
             __typename
+            items {
+              __typename
+              id
+              messageId
+              owner
+              acked
+              active
+              createdAt
+              updatedAt
+              messageStatusId
+            }
             nextToken
           }
           updatedAt
@@ -1800,6 +2297,17 @@ export class APIService {
           createdAt
           status {
             __typename
+            items {
+              __typename
+              id
+              messageId
+              owner
+              acked
+              active
+              createdAt
+              updatedAt
+              messageStatusId
+            }
             nextToken
           }
           updatedAt
@@ -1837,6 +2345,17 @@ export class APIService {
           createdAt
           status {
             __typename
+            items {
+              __typename
+              id
+              messageId
+              owner
+              acked
+              active
+              createdAt
+              updatedAt
+              messageStatusId
+            }
             nextToken
           }
           updatedAt
@@ -1868,7 +2387,7 @@ export class APIService {
           __typename
           id
           topicId
-          userId
+          username
           owner
           expiresAt
           acked
@@ -1903,7 +2422,7 @@ export class APIService {
           __typename
           id
           topicId
-          userId
+          username
           owner
           expiresAt
           acked
@@ -1938,7 +2457,7 @@ export class APIService {
           __typename
           id
           topicId
-          userId
+          username
           owner
           expiresAt
           acked

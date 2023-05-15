@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "storage": {
+      "s3chatsstorage618dc1b5": [
+        "update",
+        "delete"
+      ],
+      "Topic:@model(appsync)": [
+        "delete"
+      ],
+      "Message:@model(appsync)": [
+        "delete"
+      ],
+      "Subscribe:@model(appsync)": [
+        "delete"
+      ],
+      "Status:@model(appsync)": [
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

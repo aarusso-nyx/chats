@@ -1,0 +1,7 @@
+[
+  {
+    "Effect": "Allow",
+    "Action": ["dynamodb:UpdateItem"],
+    "Resource": ["arn:aws:dynamodb:sa-east-1:577026419139:table/Topic-uy3cshk2f5clhle3gk7dynqgtq-staging"]
+  }
+]

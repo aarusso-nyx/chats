@@ -32,7 +32,7 @@ type Message
   id: ID!
   owner: String
   topicId: ID!   @index(name: "getByTopic", sortKeyFields: ["createdAt"])
-  payload: AWSJSON!
+  payload: String
   attachs: [AWSURL]
   createdAt: AWSDateTime 
   status: [Status] @hasMany(indexName: "getByMessage")
@@ -48,7 +48,7 @@ type Subscribe
 {
   id: ID!
   topicId: ID! @index(name: "getByTopic")
-  userId: String! @index(name: "getByUser")
+  username: String! @index(name: "getByUser")
   owner: String
   
   expiresAt: AWSDateTime @default(value: "1969-12-31T00:00:00.000Z")

@@ -11,9 +11,31 @@ mutation CreateTopic(
     n_msgs
     n_subs
     subscriptions {
+      items {
+        id
+        topicId
+        username
+        owner
+        expiresAt
+        acked
+        active
+        createdAt
+        updatedAt
+        topicSubscriptionsId
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        owner
+        topicId
+        payload
+        attachs
+        createdAt
+        updatedAt
+        topicMessagesId
+      }
       nextToken
     }
     createdAt
@@ -32,9 +54,31 @@ mutation UpdateTopic(
     n_msgs
     n_subs
     subscriptions {
+      items {
+        id
+        topicId
+        username
+        owner
+        expiresAt
+        acked
+        active
+        createdAt
+        updatedAt
+        topicSubscriptionsId
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        owner
+        topicId
+        payload
+        attachs
+        createdAt
+        updatedAt
+        topicMessagesId
+      }
       nextToken
     }
     createdAt
@@ -53,9 +97,31 @@ mutation DeleteTopic(
     n_msgs
     n_subs
     subscriptions {
+      items {
+        id
+        topicId
+        username
+        owner
+        expiresAt
+        acked
+        active
+        createdAt
+        updatedAt
+        topicSubscriptionsId
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        owner
+        topicId
+        payload
+        attachs
+        createdAt
+        updatedAt
+        topicMessagesId
+      }
       nextToken
     }
     createdAt
@@ -74,6 +140,16 @@ mutation CreateMessage(
     attachs
     createdAt
     status {
+      items {
+        id
+        messageId
+        owner
+        acked
+        active
+        createdAt
+        updatedAt
+        messageStatusId
+      }
       nextToken
     }
     updatedAt
@@ -92,6 +168,16 @@ mutation UpdateMessage(
     attachs
     createdAt
     status {
+      items {
+        id
+        messageId
+        owner
+        acked
+        active
+        createdAt
+        updatedAt
+        messageStatusId
+      }
       nextToken
     }
     updatedAt
@@ -110,6 +196,16 @@ mutation DeleteMessage(
     attachs
     createdAt
     status {
+      items {
+        id
+        messageId
+        owner
+        acked
+        active
+        createdAt
+        updatedAt
+        messageStatusId
+      }
       nextToken
     }
     updatedAt
@@ -123,7 +219,7 @@ mutation CreateSubscribe(
   createSubscribe(input: $input, condition: $condition) {
     id
     topicId
-    userId
+    username
     owner
     expiresAt
     acked
@@ -140,7 +236,7 @@ mutation UpdateSubscribe(
   updateSubscribe(input: $input, condition: $condition) {
     id
     topicId
-    userId
+    username
     owner
     expiresAt
     acked
@@ -157,7 +253,7 @@ mutation DeleteSubscribe(
   deleteSubscribe(input: $input, condition: $condition) {
     id
     topicId
-    userId
+    username
     owner
     expiresAt
     acked

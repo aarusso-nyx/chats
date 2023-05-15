@@ -5,12 +5,6 @@
 
 <h3>Subscriptions</h3>
 
-
-
-<!-- <div *ngFor="let s of subs">
-    {{ s | json }}
-</div> -->
-
 <div>
     <label for="userId">User:</label>
     <select id="userId" #user>
@@ -21,7 +15,7 @@
 
   <ul>
     <li *ngFor="let s of subs">
-      {{ s.userId }} - {{ s.topicId }}
+      {{ s.username }} - {{ s.topicId }}
       <button (click)="delSub(s.id)">Delete</button>
     </li>
   </ul>

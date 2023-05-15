@@ -11,9 +11,31 @@ subscription OnCreateTopic(
     n_msgs
     n_subs
     subscriptions {
+      items {
+        id
+        topicId
+        username
+        owner
+        expiresAt
+        acked
+        active
+        createdAt
+        updatedAt
+        topicSubscriptionsId
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        owner
+        topicId
+        payload
+        attachs
+        createdAt
+        updatedAt
+        topicMessagesId
+      }
       nextToken
     }
     createdAt
@@ -32,9 +54,31 @@ subscription OnUpdateTopic(
     n_msgs
     n_subs
     subscriptions {
+      items {
+        id
+        topicId
+        username
+        owner
+        expiresAt
+        acked
+        active
+        createdAt
+        updatedAt
+        topicSubscriptionsId
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        owner
+        topicId
+        payload
+        attachs
+        createdAt
+        updatedAt
+        topicMessagesId
+      }
       nextToken
     }
     createdAt
@@ -53,9 +97,31 @@ subscription OnDeleteTopic(
     n_msgs
     n_subs
     subscriptions {
+      items {
+        id
+        topicId
+        username
+        owner
+        expiresAt
+        acked
+        active
+        createdAt
+        updatedAt
+        topicSubscriptionsId
+      }
       nextToken
     }
     messages {
+      items {
+        id
+        owner
+        topicId
+        payload
+        attachs
+        createdAt
+        updatedAt
+        topicMessagesId
+      }
       nextToken
     }
     createdAt
@@ -74,6 +140,16 @@ subscription OnCreateMessage(
     attachs
     createdAt
     status {
+      items {
+        id
+        messageId
+        owner
+        acked
+        active
+        createdAt
+        updatedAt
+        messageStatusId
+      }
       nextToken
     }
     updatedAt
@@ -92,6 +168,16 @@ subscription OnUpdateMessage(
     attachs
     createdAt
     status {
+      items {
+        id
+        messageId
+        owner
+        acked
+        active
+        createdAt
+        updatedAt
+        messageStatusId
+      }
       nextToken
     }
     updatedAt
@@ -110,6 +196,16 @@ subscription OnDeleteMessage(
     attachs
     createdAt
     status {
+      items {
+        id
+        messageId
+        owner
+        acked
+        active
+        createdAt
+        updatedAt
+        messageStatusId
+      }
       nextToken
     }
     updatedAt
@@ -123,7 +219,7 @@ subscription OnCreateSubscribe(
   onCreateSubscribe(filter: $filter, owner: $owner) {
     id
     topicId
-    userId
+    username
     owner
     expiresAt
     acked
@@ -140,7 +236,7 @@ subscription OnUpdateSubscribe(
   onUpdateSubscribe(filter: $filter, owner: $owner) {
     id
     topicId
-    userId
+    username
     owner
     expiresAt
     acked
@@ -157,7 +253,7 @@ subscription OnDeleteSubscribe(
   onDeleteSubscribe(filter: $filter, owner: $owner) {
     id
     topicId
-    userId
+    username
     owner
     expiresAt
     acked

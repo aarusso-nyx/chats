@@ -5,6 +5,16 @@
 
 <h3>MESSAGES</h3>
 
+<h2>Create New Message</h2>
+    
+  <label for="content">Content:</label>
+  <textarea type="text" id="content" #msg name="content" required>
+    </textarea>
+  <button (click)="addMsg(msg.value)">Create</button>
+
+
 <div *ngFor="let m of messages">
     {{ m | json }}
+
+    <button (click)="delMsg(m.id)">Delete</button>
 </div>

@@ -1,0 +1,271 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Lambda Function resource stack creation using Amplify CLI",
+    "Parameters": {
+        "CloudWatchRule": {
+            "Type": "String",
+            "Default" : "NONE",
+            "Description" : " Schedule Expression"
+        },
+        "deploymentBucketName": {
+            "Type": "String"
+        },
+        "env": {
+            "Type": "String"
+        },
+        "s3Key": {
+            "Type": "String"
+        }
+        ,
+    
+    
+    
+        "apichatsGraphQLAPIIdOutput": {
+            "Type": "String",
+            "Default": "apichatsGraphQLAPIIdOutput"
+            },
+        
+        "apichatsGraphQLAPIEndpointOutput": {
+            "Type": "String",
+            "Default": "apichatsGraphQLAPIEndpointOutput"
+            },
+        
+    
+        
+    
+        "storages3chatsstorage618dc1b5BucketName": {
+            "Type": "String",
+            "Default": "storages3chatsstorage618dc1b5BucketName"
+            },
+        
+    
+        
+    
+        "apichatsGraphQLAPIIdOutput": {
+            "Type": "String",
+            "Default": "apichatsGraphQLAPIIdOutput"
+            }
+        
+    
+        
+    
+    },
+    "Conditions": {
+        "ShouldNotCreateEnvResources": {
+            "Fn::Equals": [
+                {
+                    "Ref": "env"
+                },
+                "NONE"
+            ]
+        }
+    },
+    "Resources": {
+        "LambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Metadata": {
+            "aws:asset:path": "./src",
+            "aws:asset:property": "Code"
+          },
+          "Properties": {
+            "Code": {
+                "S3Bucket": {
+                    "Ref": "deploymentBucketName"
+                },
+                "S3Key": {
+                    "Ref": "s3Key"
+                }
+            },
+            "Handler": "index.handler",
+            "FunctionName": {
+                "Fn::If": [
+                    "ShouldNotCreateEnvResources",
+                    "onDelete",
+                    {
+
+                        "Fn::Join": [
+                            "",
+                            [
+                                "onDelete",
+                                "-",
+                                {
+                                    "Ref": "env"
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "Environment": {
+                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"},"STORAGE_S3CHATSSTORAGE618DC1B5_BUCKETNAME":{"Ref":"storages3chatsstorage618dc1b5BucketName"},"API_CHATS_TOPICTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:TopicTable:Name"}},"API_CHATS_TOPICTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:TopicTable:Name"}}]]},"API_CHATS_GRAPHQLAPIIDOUTPUT":{"Ref":"apichatsGraphQLAPIIdOutput"},"API_CHATS_MESSAGETABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"}},"API_CHATS_MESSAGETABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"}}]]},"API_CHATS_SUBSCRIBETABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:SubscribeTable:Name"}},"API_CHATS_SUBSCRIBETABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:SubscribeTable:Name"}}]]},"API_CHATS_STATUSTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:StatusTable:Name"}},"API_CHATS_STATUSTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:StatusTable:Name"}}]]}}
+            },
+            "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
+            "Runtime": "nodejs18.x",
+            "Layers": [],
+            "Timeout": 25
+          }
+        },
+        "LambdaExecutionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "chatsLambdaRoleeee0a865",
+                        {
+
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "chatsLambdaRoleeee0a865",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+        ,"lambdaexecutionpolicy": {
+            "DependsOn": ["LambdaExecutionRole"],
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "lambda-execution-policy",
+                "Roles": [{ "Ref": "LambdaExecutionRole" }],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": ["logs:CreateLogGroup",
+                            "logs:CreateLogStream",
+                            "logs:PutLogEvents"],
+                            "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
+                        }
+                    ]
+                }
+            }
+        }
+        ,"AmplifyResourcesPolicy": {
+            "DependsOn": ["LambdaExecutionRole"],
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "amplify-lambda-execution-policy",
+                "Roles": [{ "Ref": "LambdaExecutionRole" }],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [{"Effect":"Allow","Action":["s3:PutObject","s3:DeleteObject"],"Resource":[{"Fn::Join":["",["arn:aws:s3:::",{"Ref":"storages3chatsstorage618dc1b5BucketName"},"/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Delete*"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:TopicTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:TopicTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Delete*"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Delete*"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:SubscribeTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:SubscribeTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Delete*"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:StatusTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:StatusTable:Name"}},"/index/*"]]}]}]
+                }
+            }
+        }
+        
+        
+        
+        ,"LambdaTriggerPolicyTopic": {
+            "DependsOn": ["LambdaExecutionRole"],
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "amplify-lambda-execution-policy-Topic",
+                "Roles": [{ "Ref": "LambdaExecutionRole" }],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [{"Effect":"Allow","Action":["dynamodb:DescribeStream","dynamodb:GetRecords","dynamodb:GetShardIterator","dynamodb:ListStreams"],"Resource":{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:TopicTable:StreamArn"}}}]
+                }
+            }
+        }
+        ,"LambdaEventSourceMappingTopic": {
+            "Type": "AWS::Lambda::EventSourceMapping",
+            "DependsOn": [
+                "LambdaTriggerPolicyTopic",
+                "LambdaExecutionRole"
+            ],
+            "Properties": {
+                "BatchSize": 100,
+                "Enabled": true,
+                "EventSourceArn": {"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:TopicTable:StreamArn"}},
+                "FunctionName": {
+                    "Fn::GetAtt": [
+                        "LambdaFunction",
+                        "Arn"
+                    ]
+                },
+                "StartingPosition": "LATEST"
+            }
+        }
+        
+        ,"LambdaTriggerPolicyMessage": {
+            "DependsOn": ["LambdaExecutionRole"],
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "amplify-lambda-execution-policy-Message",
+                "Roles": [{ "Ref": "LambdaExecutionRole" }],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [{"Effect":"Allow","Action":["dynamodb:DescribeStream","dynamodb:GetRecords","dynamodb:GetShardIterator","dynamodb:ListStreams"],"Resource":{"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:MessageTable:StreamArn"}}}]
+                }
+            }
+        }
+        ,"LambdaEventSourceMappingMessage": {
+            "Type": "AWS::Lambda::EventSourceMapping",
+            "DependsOn": [
+                "LambdaTriggerPolicyMessage",
+                "LambdaExecutionRole"
+            ],
+            "Properties": {
+                "BatchSize": 100,
+                "Enabled": true,
+                "EventSourceArn": {"Fn::ImportValue":{"Fn::Sub":"${apichatsGraphQLAPIIdOutput}:GetAtt:MessageTable:StreamArn"}},
+                "FunctionName": {
+                    "Fn::GetAtt": [
+                        "LambdaFunction",
+                        "Arn"
+                    ]
+                },
+                "StartingPosition": "LATEST"
+            }
+        }
+        
+        
+        
+    },
+    "Outputs": {
+        "Name": {
+            "Value": {
+                "Ref": "LambdaFunction"
+            }
+        },
+        "Arn": {
+            "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
+        },
+        "Region": {
+            "Value": {
+                "Ref": "AWS::Region"
+            }
+        },
+        "LambdaExecutionRole": {
+            "Value": {
+                "Ref": "LambdaExecutionRole"
+            }
+        }
+        
+    }
+}

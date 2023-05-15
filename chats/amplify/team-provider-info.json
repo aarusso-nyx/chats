@@ -24,8 +24,13 @@
       "function": {
         "listUsers": {
           "deploymentBucketName": "amplify-chats-staging-225707-deployment",
-          "s3Key": "amplify-builds/listUsers-64664e34425847564862-build.zip"
-        }
+          "s3Key": "amplify-builds/listUsers-2f507348324a546f6234-build.zip"
+        },
+        "onNewMessage": {
+          "deploymentBucketName": "amplify-chats-staging-225707-deployment",
+          "s3Key": "amplify-builds/onNewMessage-6c38464b4672576f706c-build.zip"
+        },
+        "onDelete": {}
       }
     }
   },

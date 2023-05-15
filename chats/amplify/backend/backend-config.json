@@ -77,6 +77,50 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "onDelete": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "chats"
+        },
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "s3chatsstorage618dc1b5"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "chats"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "onNewMessage": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "chats"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -93,6 +137,22 @@
         {
           "category": "function",
           "resourceName": "listUsers"
+        }
+      ]
+    },
+    "AMPLIFY_function_onNewMessage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "onNewMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_onNewMessage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "onNewMessage"
         }
       ]
     }

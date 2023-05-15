@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { APIService, Message, Topic } from '../API.service';
+import { APIService, CreateMessageInput, Message, Topic } from '../API.service';
 
 @Component({
   templateUrl: './chat.component.html',
@@ -22,11 +22,11 @@ export class ChatComponent implements OnInit{
             this.topic = topic as Topic;
           });
       
-      this.fetchMessages();
+      this.fetchMsgs();
     });
   }
 
-  fetchMessages() {
+  fetchMsgs() {
     const lastFetch: string = (new Date(this.lastFetch)).toString();
     console.log('fetching messages since', lastFetch);
     this.API.MessagesByTopicIdAndCreatedAt(this.id, { gt: lastFetch })
@@ -35,18 +35,18 @@ export class ChatComponent implements OnInit{
         });
   }
 
-  createMessage(payload: string) {
+  addMsg(payload: string) {
     const input = {
-      payload,
+      payload: { content: payload },
       topicId: this.id
     };
-    this.API.CreateMessage(input)
+    this.API.CreateMessage(input as unknown as CreateMessageInput)
         .then( (message) => {
           this.messages.push(message as Message);
         });
   }
 
-  delMessage(id: string) {
+  delMsg(id: string) {
     this.API.DeleteMessage({ id })
         .then( () => {
           this.messages = this.messages.filter( (message) => message.id !== id);
